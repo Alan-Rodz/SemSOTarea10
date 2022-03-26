@@ -18,7 +18,7 @@ export const ComponenteProceso: React.FC<ProcesoProps> = ({ width, proceso }) =>
                 <Box
                     width={'width'}
                     borderRadius={GLOBAL_BORDER_RADIUS}
-                    padding={1}
+                    padding={2}
                     m={3}
                     bg={GLOBAL_SECONDARY_COLOR}
                     fontSize={15}
@@ -43,7 +43,7 @@ export const ComponenteProceso: React.FC<ProcesoProps> = ({ width, proceso }) =>
                 <Box
                     width={width}
                     borderRadius={GLOBAL_BORDER_RADIUS}
-                    padding={1}
+                    padding={2}
                     m={3}                    
                     bg={GLOBAL_SECONDARY_COLOR}
                     fontSize={15}
@@ -71,7 +71,7 @@ export const ComponenteProceso: React.FC<ProcesoProps> = ({ width, proceso }) =>
                 <Box
                     width={width}
                     borderRadius={GLOBAL_BORDER_RADIUS}
-                    padding={1}
+                    padding={2}
                     m={3}                                        
                     bg={GLOBAL_SECONDARY_COLOR}
                     fontSize={15}
@@ -92,7 +92,7 @@ export const ComponenteProceso: React.FC<ProcesoProps> = ({ width, proceso }) =>
                 <Box
                     width={width}
                     borderRadius={GLOBAL_BORDER_RADIUS}
-                    padding={1}
+                    padding={2}
                     m={3}                    
                     bg={GLOBAL_SECONDARY_COLOR}
                     fontSize={15}

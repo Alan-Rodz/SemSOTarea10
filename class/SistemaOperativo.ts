@@ -4,7 +4,7 @@ import { generarUUID } from '../util/generarUUID';
 
 // ********************************************************************************
 export const CONSTANTE_TIEMPO_BLOQUEADO = 8;
-export const CONSTANTE_MEMORIA = 5;
+export const CONSTANTE_MEMORIA = 4/*total: 5*/;
 export const PROGRAMA_FINALIZADO = 'Programa Finalizado';
 
 export type EstadoSO = 'Activo' | 'Terminado';
@@ -54,7 +54,7 @@ export class SistemaOperativo {
 
             // ... Interrupcion .......................................................................................................
             if (isInterrupcion === true) { 
-                if (!this.procesoEnEjecucion || (this.procesosBloqueados.length + this.procesosListos.length >= 5) ) {  setIsInterrupcion(!isInterrupcion); return;  }
+                if (!this.procesoEnEjecucion || (this.procesosBloqueados.length + this.procesosListos.length >= CONSTANTE_MEMORIA) ) {  setIsInterrupcion(!isInterrupcion); return;  }
                 const procesoInterrumpido = this.procesoEnEjecucion;
                 procesoInterrumpido.estado = 'Bloqueado';
                 this.procesosBloqueados.push(procesoInterrumpido);
@@ -97,7 +97,7 @@ export class SistemaOperativo {
             // ... Comportamiento Default .............................................................................................
             if (this.procesosBloqueados.length !== 0) { this.procesarBloqueados(); }
 
-            if (this.procesosListos.length < 5) { /*llenar procesos listos*/
+            if (this.procesosListos.length < CONSTANTE_MEMORIA) { /*llenar procesos listos*/
                 const procesoListo = this.procesosNuevos.shift();
                 if (procesoListo) { 
                     procesoListo.estado = 'Listo';
