@@ -112,7 +112,7 @@ export class SistemaOperativo {
             if (this.procesosListos.length !== 0 && !this.procesoEnEjecucion) { /*agregar proceso a ejecución*/
                 const procesoEjecutado = this.procesosListos.shift();
                 if (procesoEjecutado) {
-                    procesoEjecutado.estado ='Ejecucion';
+                    procesoEjecutado.estado = 'Ejecucion';
                     procesoEjecutado.tiempoEjecucionQuantum = 0; /*reiniciar en cada ejecución*/
                     if (procesoEjecutado.tiempoRespuesta === 0) { /*solo la primera vez*/
                         procesoEjecutado.tiempoRespuesta = this.reloj - procesoEjecutado.tiempoLlegada;
@@ -129,7 +129,7 @@ export class SistemaOperativo {
                 this.procesoEnEjecucion.tiempoEjecucionQuantum++;
             }
 
-            if (this.procesoEnEjecucion) { /*procesamiento de proceso terminado*/
+            if (this.procesoEnEjecucion) { /*procesamiento de proceso terminado o tiempo de quantum expirado*/
                 if (this.procesoEnEjecucion.tiempoTotal === this.procesoEnEjecucion.tiempoMaximoEstimado) { /*se completó el tiempo total*/
                     const procesoTerminado = this.procesoEnEjecucion;
                     procesoTerminado.estado = 'Terminado';
@@ -141,7 +141,7 @@ export class SistemaOperativo {
                     this.procesoEnEjecucion = null/*proceso terminado*/;
                 }
 
-                if (this.procesoEnEjecucion && this.procesoEnEjecucion.tiempoEjecucionQuantum === this.quantum) { /*se completó el tiempo del quantum*/
+                if (this.procesoEnEjecucion && this.procesoEnEjecucion.tiempoEjecucionQuantum === this.quantum+1/*porque se hace todo en una sola operación*/) { /*se completó el tiempo del quantum*/
                     const procesoQueRegresaAListos = this.procesoEnEjecucion;
                     procesoQueRegresaAListos.estado = 'Listo';
                     this.procesosListos.push(procesoQueRegresaAListos);
@@ -149,6 +149,7 @@ export class SistemaOperativo {
                     const nuevoProcesoEnEjecucion = this.procesosListos.shift();
                     if (nuevoProcesoEnEjecucion) {
                         nuevoProcesoEnEjecucion.estado = 'Ejecucion';
+                        nuevoProcesoEnEjecucion.tiempoEjecucionQuantum = 0/*se reinicia de nuevo*/;
                         this.procesoEnEjecucion = nuevoProcesoEnEjecucion;
                     }
                 }
@@ -249,6 +250,7 @@ export class SistemaOperativo {
     public getProcesosNuevos = (): Proceso[] => { return this.procesosNuevos; }
     public getProcesosTerminados = (): Proceso[] => { return this.procesosTerminados; }
     public getReloj = (): number => { return this.reloj; }
+    public getQuantum = (): number => { return this.quantum; }
     public getProcesosListos = (): Proceso[] => { return this.procesosListos; }
     public getTodosLosProcesos = (): Proceso[] => {
         const todosLosProcesos: Proceso[] = [];

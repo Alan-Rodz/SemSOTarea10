@@ -17,12 +17,12 @@ import { SeccionControles } from '../component/seccion/SeccionControles';
 import { ModalProcesos } from '../component/ModalProcesos';
 
 // *****************************************************************************************************************************
-const VELOCIDAD = 100;
+const VELOCIDAD = 500;
 export const MENSAJE_PROGRAMA_TERMINADO = 'Programa Finalizado';
 const teclasValidas = ['Enter', 'KeyC', 'KeyP', 'KeyI', 'KeyE', 'KeyT', 'KeyN', 'KeyB'];
 
-export const GLOBAL_COLOR = '#DAF7DC';
-export const GLOBAL_SECONDARY_COLOR = '#84DCC6';
+export const GLOBAL_COLOR = '#ade8f4';
+export const GLOBAL_SECONDARY_COLOR = '#48cae4';
 export const GLOBAL_BORDER_RADIUS = 15;
 
 // === App =====================================================================================================================
@@ -146,16 +146,16 @@ const Home: NextPage = () => {
           <TituloSeccion nombreSeccion={`Controles`} />
           <>
             <Box
-              transform='translateX(-50%)'
-              left='79%'
+              transform={'translateX(-50%)'}
+              left={'79%'}
               position={'absolute'}
               bg={GLOBAL_SECONDARY_COLOR}
               borderRadius={GLOBAL_BORDER_RADIUS}
-              mt={5}
               padding={3}
               fontSize={15}
+              width={'fit-content'}
             >
-              {`Reloj: ${sistemaOperativoMostrado.getReloj()}`}
+              {`Reloj: ${sistemaOperativoMostrado.getReloj()}  Quantum: ${sistemaOperativoMostrado.getQuantum()}`}
             </Box>
           </>
           <SeccionControles

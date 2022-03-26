@@ -81,7 +81,7 @@ export const SeccionControles: React.FC<SeccionControlesProps> =
         {
           (isEvaluado && !isComenzado) &&
           <Center>
-            <Flex mt={20}>
+            <Flex mt={20} gap={1}>
               <Boton contenido={'Comenzar (Tecla C)'} width={'fit-content'} callback={() => setIsComenzado(!isComenzado)} />
             </Flex>
           </Center>
@@ -89,7 +89,7 @@ export const SeccionControles: React.FC<SeccionControlesProps> =
 
         {
           (isComenzado && !isTerminado) &&
-          <Flex mt={20}>
+          <Flex mt={20} gap={1}>
             <Box>
               <Boton contenido={`${isPausa ? 'Continuar (Tecla P)' : 'Pausar (Tecla P)'}`} width={'100%'} callback={() => setIsPausa(!isPausa)} />
               <Boton contenido={'Interrupción (Tecla I)'} width={'100%'} callback={handleInterrupcion} />
