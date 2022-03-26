@@ -16,6 +16,11 @@ export const handleKeyPress = (e: KeyboardEvent, isEvaluado: boolean, isComenzad
       if (e.code === 'KeyC') {
         e.preventDefault();
 
+        if (isTerminado === true) {
+          onClose();
+          return;
+        }
+        
         if (isEvaluado === false) { /*no se ha evaluado el programa todavía*/
           return;
         }
@@ -34,21 +39,51 @@ export const handleKeyPress = (e: KeyboardEvent, isEvaluado: boolean, isComenzad
         else { return; } /*ninguno de los casos anteriores*/
       }
 
-      if (e.code === 'KeyP') { e.preventDefault(); if (isComenzado === true) { setIsPausa(!isPausa); return; } else { return; } }
+      if (e.code === 'KeyP') { 
+        e.preventDefault(); 
+        if (isComenzado === true) { 
+          setIsPausa(!isPausa); 
+          return; 
+        } else { return; } 
+      }
 
       if (e.code === 'KeyI') {
         e.preventDefault();
         if (isComenzado === true && isInterrupcion === false) {
           setIsInterrupcion(!isInterrupcion);
           return;
-        } else {
-          return;
-        }
+        } else { return; }
       }
 
-      if (e.code === 'KeyE') { e.preventDefault(); if (isComenzado === true) { handleError(); setMensaje('Si hay un proceso en ejecución y la memoria está llena, será marcado como error.'); } else { return; } }
-      if (e.code === 'KeyT') { e.preventDefault(); if (isComenzado === true) { setIsTerminado(!isTerminado); setMensaje(MENSAJE_PROGRAMA_TERMINADO); } else { return; } }
-      if (e.code === 'KeyN') { e.preventDefault(); if (isComenzado === true) { setIsNuevoProceso(!isNuevoProceso); setMensaje('Agregando Proceso...'); } else { return; } }
+      if (e.code === 'KeyE') { 
+        e.preventDefault(); 
+        if (isComenzado === true) { 
+          handleError(); 
+          setMensaje('Si hay un proceso en ejecución y la memoria está llena, será marcado como error.'); 
+        } else { 
+          return; 
+        } 
+      }
+
+      if (e.code === 'KeyT') { 
+        e.preventDefault(); 
+        if (isTerminado === true ) { /*abriendo y cerrando después de que el programa terminó*/
+          onOpen();
+          return;
+        }
+        if (isComenzado === true) { 
+          setIsTerminado(!isTerminado); 
+          setMensaje(MENSAJE_PROGRAMA_TERMINADO); } 
+          else { return;  } 
+      }
+
+      if (e.code === 'KeyN') { 
+        e.preventDefault(); 
+        if (isComenzado === true) { 
+          setIsNuevoProceso(!isNuevoProceso); 
+          setMensaje('Agregando Proceso...'); 
+        } else { return; } 
+      }
 
       if (e.code === 'KeyB') {
         e.preventDefault();
