@@ -112,7 +112,7 @@ const Home: NextPage = () => {
 
 
   return (
-    <Grid h='100vh' templateRows='repeat(10, 1fr)' templateColumns='repeat(10, 1fr)'>
+    <Grid h='100vh' templateRows='repeat(10, 1fr)' templateColumns='repeat(10, 1fr)' gap={1} backgroundColor={'black'} >
       {/* === Modal Tabla Procesos =============================================================================================================== */}
       <ModalProcesos isOpen={isOpen} onClose={onClose} isPausa={isPausa} isTerminado={isTerminado} setIsPausa={setIsPausa} sistemaOperativoActual={sistemaOperativoMostrado} />
 

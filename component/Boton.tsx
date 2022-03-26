@@ -18,6 +18,7 @@ export const Boton: React.FC<BotonProps> = ({ contenido, width, callback }) => {
             mt={3}
             bg={GLOBAL_SECONDARY_COLOR}
             onClick={callback}
+            _hover={{backgroundColor:'#31C4C4'}}
         >
             {contenido}
         </Button>

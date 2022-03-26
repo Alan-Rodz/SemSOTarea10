@@ -50,20 +50,24 @@ export const SeccionControles: React.FC<SeccionControlesProps> =
               <Input
                 mt={59}
                 placeholder={'Cantidad de procesos...'}
+                _placeholder={ {color:'blue'} }
                 width={'50%|'}
                 value={valorInputCantidadProcesos}
                 onChange={handleChangeValorInputCantidadProcesos}
                 borderRadius={GLOBAL_BORDER_RADIUS}
+                borderColor={'black'}
                 color={'black'}
               />
               <Input
                 mt={59}
                 placeholder={'Valor del Quantum...'}
+                _placeholder={ {color:'blue'} }
                 width={'50%|'}
                 value={valorInputQuantum}
                 onChange={handleChangeValorInputQuantum}
                 borderRadius={GLOBAL_BORDER_RADIUS}
                 color={'black'}
+                borderColor={'black'}
               />
             </>
           }
