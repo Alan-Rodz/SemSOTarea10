@@ -24,6 +24,8 @@ export class Proceso {
     tiempoRetorno: number;
     tiempoRespuesta: number;
 
+    tiempoEjecucionQuantum: number;
+
 
     constructor(ID: string, tiempoMaximoEstimado: number, tiempoRestante: number, tiempoTotal: number, operacion: Operacion, operando1: number,  operando2: number,  resultado: number,  estado: Estado, error: boolean){
         this.ID = ID;
@@ -44,6 +46,8 @@ export class Proceso {
         this.tiempoServicio = 0;
         this.tiempoRetorno = 0;
         this.tiempoRespuesta = 0;
+
+        this.tiempoEjecucionQuantum = 0;
     }
 
 }

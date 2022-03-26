@@ -19,9 +19,7 @@ export const ComponenteProceso: React.FC<ProcesoProps> = ({ width, proceso }) =>
                     width={'width'}
                     borderRadius={GLOBAL_BORDER_RADIUS}
                     padding={1}
-                    mt={10}
-                    ml={10}
-                    mr={10}
+                    m={3}
                     bg={GLOBAL_SECONDARY_COLOR}
                     fontSize={15}
                 >
@@ -46,9 +44,7 @@ export const ComponenteProceso: React.FC<ProcesoProps> = ({ width, proceso }) =>
                     width={width}
                     borderRadius={GLOBAL_BORDER_RADIUS}
                     padding={1}
-                    mt={10}
-                    ml={10}
-                    mr={10}
+                    m={3}                    
                     bg={GLOBAL_SECONDARY_COLOR}
                     fontSize={15}
                 >
@@ -62,6 +58,7 @@ export const ComponenteProceso: React.FC<ProcesoProps> = ({ width, proceso }) =>
                             (Operación: ${proceso.operacion}) ${SEPARADOR} 
                             (Operando1: ${proceso.operando1}) ${SEPARADOR}
                             (Operando2: ${proceso.operando2})
+                            (Quantum: ${proceso.tiempoEjecucionQuantum})
                             `
                         }
                     </Box>
@@ -75,9 +72,7 @@ export const ComponenteProceso: React.FC<ProcesoProps> = ({ width, proceso }) =>
                     width={width}
                     borderRadius={GLOBAL_BORDER_RADIUS}
                     padding={1}
-                    mt={10}
-                    ml={10}
-                    mr={10}
+                    m={3}                                        
                     bg={GLOBAL_SECONDARY_COLOR}
                     fontSize={15}
                 >
@@ -98,9 +93,7 @@ export const ComponenteProceso: React.FC<ProcesoProps> = ({ width, proceso }) =>
                     width={width}
                     borderRadius={GLOBAL_BORDER_RADIUS}
                     padding={1}
-                    mt={10}
-                    ml={10}
-                    mr={10}
+                    m={3}                    
                     bg={GLOBAL_SECONDARY_COLOR}
                     fontSize={15}
                 >

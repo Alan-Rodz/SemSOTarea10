@@ -113,8 +113,11 @@ export class SistemaOperativo {
                 const procesoEjecutado = this.procesosListos.shift();
                 if (procesoEjecutado) {
                     procesoEjecutado.estado ='Ejecucion';
-                    procesoEjecutado.tiempoRespuesta = this.reloj - procesoEjecutado.tiempoLlegada;
-
+                    procesoEjecutado.tiempoEjecucionQuantum = 0; /*reiniciar en cada ejecución*/
+                    if (procesoEjecutado.tiempoRespuesta === 0) { /*solo la primera vez*/
+                        procesoEjecutado.tiempoRespuesta = this.reloj - procesoEjecutado.tiempoLlegada;
+                    }
+                    
                     this.procesoEnEjecucion = procesoEjecutado;
                 }
             }
@@ -123,10 +126,11 @@ export class SistemaOperativo {
                 this.procesoEnEjecucion.tiempoRestante--;
                 this.procesoEnEjecucion.tiempoTotal++;
                 this.procesoEnEjecucion.tiempoServicio++;
+                this.procesoEnEjecucion.tiempoEjecucionQuantum++;
             }
 
-            if (this.procesoEnEjecucion) {
-                if (this.procesoEnEjecucion.tiempoTotal === this.procesoEnEjecucion.tiempoMaximoEstimado) {
+            if (this.procesoEnEjecucion) { /*procesamiento de proceso terminado*/
+                if (this.procesoEnEjecucion.tiempoTotal === this.procesoEnEjecucion.tiempoMaximoEstimado) { /*se completó el tiempo total*/
                     const procesoTerminado = this.procesoEnEjecucion;
                     procesoTerminado.estado = 'Terminado';
                     procesoTerminado.tiempoFinalizacion = this.reloj;
@@ -135,6 +139,18 @@ export class SistemaOperativo {
 
                     this.procesosTerminados.push(procesoTerminado);
                     this.procesoEnEjecucion = null/*proceso terminado*/;
+                }
+
+                if (this.procesoEnEjecucion && this.procesoEnEjecucion.tiempoEjecucionQuantum === this.quantum) { /*se completó el tiempo del quantum*/
+                    const procesoQueRegresaAListos = this.procesoEnEjecucion;
+                    procesoQueRegresaAListos.estado = 'Listo';
+                    this.procesosListos.push(procesoQueRegresaAListos);
+
+                    const nuevoProcesoEnEjecucion = this.procesosListos.shift();
+                    if (nuevoProcesoEnEjecucion) {
+                        nuevoProcesoEnEjecucion.estado = 'Ejecucion';
+                        this.procesoEnEjecucion = nuevoProcesoEnEjecucion;
+                    }
                 }
             }
 

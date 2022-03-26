@@ -17,7 +17,7 @@ import { SeccionControles } from '../component/seccion/SeccionControles';
 import { ModalProcesos } from '../component/ModalProcesos';
 
 // *****************************************************************************************************************************
-const VELOCIDAD = 500;
+const VELOCIDAD = 100;
 export const MENSAJE_PROGRAMA_TERMINADO = 'Programa Finalizado';
 const teclasValidas = ['Enter', 'KeyC', 'KeyP', 'KeyI', 'KeyE', 'KeyT', 'KeyN', 'KeyB'];
 
@@ -236,6 +236,8 @@ const Home: NextPage = () => {
         overflowX={'scroll'}
         overflowY={'scroll'}
         gridAutoFlow={'column'}
+        paddingBottom={3}
+        paddingRight={6}
         rowStart={8}
         rowSpan={3}
         colStart={5}
