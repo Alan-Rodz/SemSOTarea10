@@ -12,7 +12,8 @@ interface SeccionControlesProps {
   isNuevoProceso: boolean;
   setIsNuevoProceso: Dispatch<SetStateAction<boolean>>;
 
-  inputValue: string;
+  valorInputCantidadProcesos: string;
+  valorInputQuantum: string;
 
   mensaje: string;
   setMensaje: Dispatch<SetStateAction<string>>;
@@ -26,7 +27,8 @@ interface SeccionControlesProps {
   isTerminado: boolean;
   setIsTerminado: Dispatch<SetStateAction<boolean>>;
 
-  handleChange: (e: React.FormEvent<HTMLInputElement>) => void;
+  handleChangeValorInputCantidadProcesos: (e: React.FormEvent<HTMLInputElement>) => void;
+  handleChangeValorInputQuantum: (e: React.FormEvent<HTMLInputElement>) => void;
   handleInterrupcion: () => void;
   handleError: () => void;
   handleEvaluar: () => void;
@@ -36,22 +38,34 @@ interface SeccionControlesProps {
 
 export const SeccionControles: React.FC<SeccionControlesProps> =
   ({ isPausa, setIsPausa, isNuevoProceso, setIsNuevoProceso,
-    inputValue, mensaje, setMensaje, isEvaluado, isComenzado, setIsComenzado, isTerminado, setIsTerminado,
-    handleChange, handleEvaluar, handleInterrupcion, handleError, abrirTablaProcesos }) => {
+    valorInputCantidadProcesos, valorInputQuantum, mensaje, setMensaje, isEvaluado, 
+    isComenzado, setIsComenzado, isTerminado, setIsTerminado,
+    handleChangeValorInputCantidadProcesos, handleChangeValorInputQuantum, handleEvaluar, handleInterrupcion, handleError, abrirTablaProcesos }) => {
 
     return (
       <>
         <Center>
           {!isEvaluado &&
-            <Input
-              mt={59}
-              placeholder={'Cantidad de procesos...'}
-              width={'50%|'}
-              value={inputValue}
-              onChange={handleChange}
-              borderRadius={GLOBAL_BORDER_RADIUS}
-              color={'black'}
-            />
+            <>
+              <Input
+                mt={59}
+                placeholder={'Cantidad de procesos...'}
+                width={'50%|'}
+                value={valorInputCantidadProcesos}
+                onChange={handleChangeValorInputCantidadProcesos}
+                borderRadius={GLOBAL_BORDER_RADIUS}
+                color={'black'}
+              />
+              <Input
+                mt={59}
+                placeholder={'Valor del Quantum...'}
+                width={'50%|'}
+                value={valorInputQuantum}
+                onChange={handleChangeValorInputQuantum}
+                borderRadius={GLOBAL_BORDER_RADIUS}
+                color={'black'}
+              />
+            </>
           }
         </Center>
 

@@ -36,7 +36,8 @@ const observableSistemaOperativo$: Observable<SistemaOperativo> = new Observable
 const Home: NextPage = () => {
 
   // --- State ------------------------------------------------------------------------------------
-  const [inputValue, setInputValue] = useState<string>('');
+  const [valorInputCantidadProcesos, setValorInputCantidadProcesos] = useState<string>('');
+  const [valorInputQuantum, setValorInputQuantum] = useState<string>('');
 
   const [sistemaOperativoMostrado, setSistemaOperativoMostrado] = useState<SistemaOperativo>(sistemaOperativoOriginal);
   const [isEvaluado, setIsEvaluado] = useState<boolean>(false);
@@ -56,19 +57,21 @@ const Home: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // --- Handlers --------------------------------------------------------------------------------------
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) => { setInputValue((e.target as HTMLInputElement).value); }
+  const handleChangeInputCantidadProcesos = (e: React.FormEvent<HTMLInputElement>) => { setValorInputCantidadProcesos((e.target as HTMLInputElement).value); }
+  const handleChangeValorInputQuantum = (e: React.FormEvent<HTMLInputElement>) => { setValorInputQuantum((e.target as HTMLInputElement).value); }
   const handleInterrupcion = () => { setIsInterrupcion(!isInterrupcion); }
   const handleError = useCallback(() => { setIsError(!isError); }, [isError])
   const handleEvaluar = () => {
-    if (parseInt(inputValue) && parseInt(inputValue) > 0) {
+    if ((parseInt(valorInputCantidadProcesos) && parseInt(valorInputCantidadProcesos) > 0) && (parseInt(valorInputQuantum) && parseInt(valorInputQuantum) > 0)) {
       setIsEvaluado(!isEvaluado);
-      setMensaje('Cantidad De Procesos Válida');
+      setMensaje('Cantidades Válidas');
 
-      sistemaOperativoOriginal.setCantidadProcesos(parseInt(inputValue));
+      sistemaOperativoOriginal.setCantidadProcesos(parseInt(valorInputCantidadProcesos));
+      sistemaOperativoOriginal.setQuantum(parseInt(valorInputQuantum));
       sistemaOperativoOriginal.inicializar();
 
     } else {
-      setMensaje('Cantidad De Procesos Inválida');
+      setMensaje('Cantidades Inválidas');
     }
   }
 
@@ -160,7 +163,8 @@ const Home: NextPage = () => {
             setIsPausa={setIsPausa}
             isNuevoProceso={isNuevoProceso}
             setIsNuevoProceso={setIsNuevoProceso}
-            inputValue={inputValue}
+            valorInputCantidadProcesos={valorInputCantidadProcesos}
+            valorInputQuantum={valorInputQuantum}
             mensaje={mensaje}
             setMensaje={setMensaje}
             isEvaluado={isEvaluado}
@@ -169,7 +173,8 @@ const Home: NextPage = () => {
             setIsComenzado={setIsComenzado}
             isTerminado={isTerminado}
             setIsTerminado={setIsTerminado}
-            handleChange={handleChange}
+            handleChangeValorInputCantidadProcesos={handleChangeInputCantidadProcesos}
+            handleChangeValorInputQuantum={handleChangeValorInputQuantum}
             handleInterrupcion={handleInterrupcion}
             handleError={handleError}
             handleEvaluar={handleEvaluar}

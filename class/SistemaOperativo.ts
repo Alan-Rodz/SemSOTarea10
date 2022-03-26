@@ -17,6 +17,7 @@ export class SistemaOperativo {
     private reloj: number;
     private procesosListos: Proceso[];
     private estadoSO: EstadoSO;
+    private quantum: number;
 
     constructor(cantidadProcesos: number, procesoEnEjecucion: Proceso | null, procesosBloqueados: Proceso[], procesosNuevos: Proceso[], procesosTerminados: Proceso[], reloj: number, procesosListos: Proceso[], estadoSO: EstadoSO) {
         this.cantidadProcesos = cantidadProcesos;
@@ -27,6 +28,7 @@ export class SistemaOperativo {
         this.reloj = reloj;
         this.procesosListos = procesosListos;
         this.estadoSO = estadoSO;
+        this.quantum = 0;
     }
 
     // --- Estado ----------------------------------------------------------------------------------------------------
@@ -248,6 +250,12 @@ export class SistemaOperativo {
     // --- Setters ----------------------------------------------------------------------------------------------------
     public setCantidadProcesos = (cantidad: number): SistemaOperativo => {
         this.cantidadProcesos = cantidad;
+        const nuevoEstado = { ...this };
+        return nuevoEstado;
+    }
+    
+    public setQuantum = (cantidad: number): SistemaOperativo => {
+        this.quantum = cantidad;
         const nuevoEstado = { ...this };
         return nuevoEstado;
     }
