@@ -1,9 +1,10 @@
 import { Box, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
 import { Observable } from 'rxjs'
 import type { NextPage } from 'next';
+import React, { useCallback, useEffect, useState } from 'react';
 
+import { handleKeyPress } from '../action/handleKeyPress';
 import { SistemaOperativo } from '../class/SistemaOperativo';
-import React, { useEffect, useState } from 'react';
 import { ContenedorSeccion } from '../component/seccion/ContenedorSeccion';
 import { SeccionEjecucion } from '../component/seccion/SeccionEjecucion';
 import { TituloSeccion } from '../component/seccion/TituloSeccion';
@@ -48,21 +49,42 @@ const Home: NextPage = () => {
   const [isTerminado, setIsTerminado] = useState<boolean>(false);
 
   const [isNuevoProceso, setIsNuevoProceso] = useState<boolean>(false);
-  const [isTablaProcesos, setIsTablaProcesos] = useState<boolean>(false);
 
   const [mensaje, setMensaje] = useState<string>('');
   const [trigger, setTrigger] = useState<number>(0);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  // --- Handlers --------------------------------------------------------------------------------------
+  const handleChange = (e: React.FormEvent<HTMLInputElement>) => { setInputValue((e.target as HTMLInputElement).value); }
+  const handleInterrupcion = () => { setIsInterrupcion(!isInterrupcion); }
+  const handleError = useCallback(() => { setIsError(!isError); }, [isError])
+  const handleEvaluar = () => {
+    if (parseInt(inputValue) && parseInt(inputValue) > 0) {
+      setIsEvaluado(!isEvaluado);
+      setMensaje('Cantidad De Procesos Válida');
+
+      sistemaOperativoOriginal.setCantidadProcesos(parseInt(inputValue));
+      sistemaOperativoOriginal.inicializar();
+
+    } else {
+      setMensaje('Cantidad De Procesos Inválida');
+    }
+  }
+
+  // --- Callbacks --------------------------------------------------------------------------------------
+  const handleUserKeyPress = useCallback((event: KeyboardEvent) => {
+    handleKeyPress(event, isEvaluado, isComenzado, setIsComenzado, isPausa, setIsPausa, onClose, isInterrupcion, setIsInterrupcion, handleError, setMensaje, isTerminado, setIsTerminado, isNuevoProceso, setIsNuevoProceso, onOpen);
+  }, [handleError, isComenzado, isEvaluado, isInterrupcion, isNuevoProceso, isPausa, isTerminado, onClose, onOpen]);
+
   // --- Effects ------------------------------------------------------------------------------------
   useEffect(() => { /*actualizar estado del SO*/
-    const modificarEstadoSO = setInterval(() => {
+  const modificarEstadoSO = setInterval(() => {
 
-      sistemaOperativoOriginal.procesarAccion(isEvaluado, isComenzado, isPausa, isInterrupcion,
-        setIsInterrupcion, isError, setIsError, isTerminado, setIsTerminado, isNuevoProceso, setIsNuevoProceso, setMensaje);
+    sistemaOperativoOriginal.procesarAccion(isEvaluado, isComenzado, isPausa, isInterrupcion,
+      setIsInterrupcion, isError, setIsError, isTerminado, setIsTerminado, isNuevoProceso, setIsNuevoProceso, setMensaje);
 
-      setTrigger(trigger + 1);
+    setTrigger(trigger + 1);
     }, VELOCIDAD);
 
     return () => clearInterval(modificarEstadoSO);
@@ -81,83 +103,10 @@ const Home: NextPage = () => {
   }, [trigger]);
 
   useEffect(() => {
-    document.addEventListener('keydown', (e) => {
-      if (!teclasValidas.includes(e.code)) { return; }
+    document.addEventListener('keydown', handleUserKeyPress);
+    return () => { document.removeEventListener('keydown', handleUserKeyPress); };
+  }, [handleUserKeyPress]);
 
-      /*else*/
-      if (e.code === 'KeyC') {
-        e.preventDefault();
-
-        if (isEvaluado === false) { /*no se ha evaluado el programa todavía*/
-          return;
-        }
-
-        if (isComenzado === false) { /*primera ejecución del programa*/
-          setIsComenzado(!isComenzado);
-          return;
-        }
-        
-        if (isComenzado === true && isPausa === true) { /*regresando de la tabla de procesos*/
-          onClose();
-          setIsPausa(!isPausa);
-        }
-        
-        
-        else { return; } /*ninguno de los casos anteriores*/
-      }
-
-      if (e.code === 'KeyP') { e.preventDefault(); if (isComenzado === true) { setIsPausa(!isPausa); return; } else { return; } }
-
-      if (e.code === 'KeyI') {
-        e.preventDefault();
-        if (isComenzado === true && isInterrupcion === false) {
-          setIsInterrupcion(!isInterrupcion);
-          return;
-        } else {
-          return;
-        }
-      }
-
-      if (e.code === 'KeyE') { e.preventDefault(); if (isComenzado === true) { handleError(); setMensaje('Si hay un proceso en ejecución y la memoria está llena, será marcado como error.'); } else { return; } }
-      if (e.code === 'KeyT') { e.preventDefault(); if (isComenzado === true) { setIsTerminado(!isTerminado); setMensaje(MENSAJE_PROGRAMA_TERMINADO); } else { return; } }
-      if (e.code === 'KeyN') { e.preventDefault(); if (isComenzado === true) { setIsNuevoProceso(!isNuevoProceso); setMensaje('Agregando Proceso...'); } else { return; } }
-
-      if (e.code === 'KeyB') {
-        e.preventDefault();
-
-        if (isTerminado === true ) { /*abriendo y cerrando después de que el programa terminó*/
-          onOpen();
-          return;
-        }
-
-        if (isComenzado === true) {
-          if (isPausa === true) { return; } /*ignorar mientras la tabla de procesos está abierta porque se cierra con C*/
-
-          setIsPausa(!isPausa); /*caso normal, se abre la tabla de procesos*/
-          onOpen();
-
-        } else { return; }
-      }
-
-    })
-  })
-
-  // --- Handlers --------------------------------------------------------------------------------------
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) => { setInputValue((e.target as HTMLInputElement).value); }
-  const handleInterrupcion = () => { setIsInterrupcion(!isInterrupcion); }
-  const handleError = () => { setIsError(!isError); }
-  const handleEvaluar = () => {
-    if (parseInt(inputValue) && parseInt(inputValue) > 0) {
-      setIsEvaluado(!isEvaluado);
-      setMensaje('Cantidad De Procesos Válida');
-
-      sistemaOperativoOriginal.setCantidadProcesos(parseInt(inputValue));
-      sistemaOperativoOriginal.inicializar();
-
-    } else {
-      setMensaje('Cantidad De Procesos Inválida');
-    }
-  }
 
   return (
     <Grid h='100vh' templateRows='repeat(10, 1fr)' templateColumns='repeat(10, 1fr)'>
